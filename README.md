@@ -9,10 +9,12 @@ This repository is my personal workspace for preparing for the **Databricks Cert
 
 ## Contents
 
-- `labs/` – Notebooks and exercises from the course  
-- `pipelines/` – Examples of ETL and data pipelines  
-- `incremental_processing/` – Practice with CDC and incremental loads  
-- `governance/` – Notes and examples on security and data governance  
+- `1- Databricks Lakehouse Platform/` – Fundamentals of the Databricks Lakehouse  
+- `2- ELT with Spark SQL and Python/` – Data transformations and queries  
+- `3- Incremental Data Processing/` – Handling updates, CDC, and streaming concepts  
+- `4- Production Pipelines/` – End-to-end pipeline design and orchestration  
+- `5- Data Governance/` – Security, access control, and best practices  
+- `Includes/` – Shared utilities, configs, and helper functions
 
 ## Usage
 
