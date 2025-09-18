@@ -1,4 +1,4 @@
-# Mirror Azure DevOps → GitHub
+# Mirror Azure DevOps → GitHub 
 # Pushing on main or develop only
 trigger:
   branches:
@@ -24,11 +24,11 @@ steps:
 
   # 3) Mirror execution
   - script: |
-      echo ===> URL origen \(ADO\)
+      echo ===> URL origen (ADO)
       for /f "delims=" %%i in ('git config --get remote.origin.url') do set SRC_URL=%%i
       echo %SRC_URL%
 
-      echo ===> Destination URL \(GitHub\)
+      echo ===> Destination URL (GitHub)
       set GH_URL=https://%GITHUB_PAT%@github.com/%USUARIO_GITHUB%/%REPO_GITHUB%.git
       echo %GH_URL%
 
