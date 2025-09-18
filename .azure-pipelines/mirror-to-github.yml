@@ -30,7 +30,7 @@ steps:
       echo "$SRC_URL"
 
       echo "===> Destination URL(GitHub)"
-      GH_URL="https://$(GITHUB_PAT)@github.com/USUARIO/REPO.git"
+      GH_URL="https://$(GITHUB_PAT)@github.com/$(USUARIO_GITHUB)/$(REPO_GITHUB).git"
       echo "$GH_URL"
 
       echo "===> Cloning mirror repo..."
