@@ -24,22 +24,21 @@ steps:
 
   # 3) Mirror execution
   - script: |
-      set -e
+      echo ===> URL origen \(ADO\)
+      for /f "delims=" %%i in ('git config --get remote.origin.url') do set SRC_URL=%%i
+      echo %SRC_URL%
 
-      echo "===> URL origen (ADO)"
-      SRC_URL=$(git config --get remote.origin.url)
-      echo "$SRC_URL"
+      echo ===> Destination URL \(GitHub\)
+      set GH_URL=https://%GITHUB_PAT%@github.com/%USUARIO_GITHUB%/%REPO_GITHUB%.git
+      echo %GH_URL%
 
-      echo "===> Destination URL(GitHub)"
-      GH_URL="https://$(GITHUB_PAT)@github.com/$(USUARIO_GITHUB)/$(REPO_GITHUB).git"
-      echo "$GH_URL"
-
-      echo "===> Cloning mirror repo..."
-      mkdir -p mirror_tmp
+      echo ===> Cloning mirror repo...
+      mkdir mirror_tmp
       cd mirror_tmp
-      git clone --mirror "$SRC_URL"
+      git clone --mirror %SRC_URL%
       cd *.git
 
-      echo "===> Pushing mirror to GitHub..."
-      git push --mirror "$GH_URL"
+      echo ===> Pushing mirror to GitHub...
+      git push --mirror %GH_URL%
     displayName: "Mirror to GitHub complete"
+    shell: cmd
