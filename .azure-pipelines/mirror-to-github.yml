@@ -21,22 +21,21 @@ steps:
       git config user.email "ado-mirror-bot@users.noreply.github.com"
     displayName: "Configurar identidad Git"
 
-  # 3) Mirror execution
+# 3) Mirror execution
   - script: |
-      echo ===> URL origen (ADO)
+      echo ===> Getting source URL (ADO)
       for /f "delims=" %%i in ('git config --get remote.origin.url') do set SRC_URL=%%i
-      echo %SRC_URL%
+      echo Source: %SRC_URL%
 
-      echo ===> Destination URL (GitHub)
+      echo ===> Cloning the repository in mirror mode...
+      git clone --mirror %SRC_URL% $(REPO_GITHUB).git
+      
+      echo ===> Entering the cloned repository directory...
+      cd $(REPO_GITHUB).git
+      
+      echo ===> Setting the destination URL (GitHub)
       set GH_URL=https://$(GITHUB_PAT)@github.com/$(USUARIO_GITHUB)/$(REPO_GITHUB).git
-      echo %GH_URL%
-
-      echo ===> Cloning mirror repo...
-      mkdir mirror_tmp
-      cd mirror_tmp
-      git clone --mirror %SRC_URL%
-      cd *.git
-
-      echo ===> Pushing mirror to GitHub...
+      
+      echo ===> Pushing to the mirror repository on GitHub...
       git push --mirror %GH_URL%
     displayName: "Mirror to GitHub complete"
