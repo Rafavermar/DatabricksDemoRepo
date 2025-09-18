@@ -10,32 +10,28 @@ pool:
   name: Default
 
 steps:
-  # 1) Complete Checkout with Historic
   - checkout: self
     fetchDepth: 0
     persistCredentials: true
 
-  # 2) Git bot identity config
   - script: |
       git config user.name "ado-mirror-bot"
       git config user.email "ado-mirror-bot@users.noreply.github.com"
     displayName: "Configurar identidad Git"
 
-# 3) Mirror execution
   - script: |
       echo ===> Getting source URL (ADO)
-      for /f "delims=" %%i in ('git config --get remote.origin.url') do set "SRC_URL=%%i"
+      for /f "delims=" %%i in ('git config --get remote.origin.url') do set SRC_URL=%%i
       echo Source: %SRC_URL%
-      echo ===> Cloning the repository in mirror mode...
-      git clone --mirror "%SRC_URL%"
-      
-      echo ===> Entering the cloned repository directory...
-      for /f "tokens=*" %%a in ('echo %SRC_URL%') do set "REPO_NAME=%%~na"
-      cd "%REPO_NAME%.git"
-      
-      echo ===> Setting the destination URL (GitHub)
-      set "GH_URL=https://$(GITHUB_PAT)@github.com/$(USUARIO_GITHUB)/$(REPO_GITHUB).git"
-      
-      echo ===> Pushing to the mirror repository on GitHub...
+
+      echo ===> Cloning in mirror mode...
+      git clone --mirror "%SRC_URL%" repo_mirror
+      cd repo_mirror
+
+      echo ===> Setting destination URL (GitHub)
+      set GH_URL=https://%GITHUB_PAT%@github.com/%USUARIO_GITHUB%/%REPO_GITHUB%.git
+      echo Destination: %GH_URL%
+
+      echo ===> Pushing to GitHub...
       git push --mirror "%GH_URL%"
     displayName: "Mirror to GitHub complete"
