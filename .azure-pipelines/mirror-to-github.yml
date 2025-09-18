@@ -4,7 +4,7 @@ trigger:
   branches:
     include:
       - main
-      - dev
+      - develop
 
 pool:
   name: Default
@@ -20,6 +20,7 @@ steps:
       git config user.name "ado-mirror-bot"
       git config user.email "ado-mirror-bot@users.noreply.github.com"
     displayName: "Configurar identidad Git"
+    shell: cmd
 
   # 3) Mirror execution
   - script: |
