@@ -20,7 +20,6 @@ steps:
       git config user.name "ado-mirror-bot"
       git config user.email "ado-mirror-bot@users.noreply.github.com"
     displayName: "Configurar identidad Git"
-    shell: cmd
 
   # 3) Mirror execution
   - script: |
@@ -41,4 +40,3 @@ steps:
       echo ===> Pushing mirror to GitHub...
       git push --mirror %GH_URL%
     displayName: "Mirror to GitHub complete"
-    shell: cmd
