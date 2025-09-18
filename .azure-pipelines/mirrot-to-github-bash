@@ -7,8 +7,7 @@ trigger:
       - develop
 
 pool:
-  name: Default
-  # vmImage: ubuntu-latest
+  vmImage: ubuntu-latest
 
 steps:
   # 1) Complete Checkout with Historic
