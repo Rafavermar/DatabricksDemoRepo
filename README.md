@@ -20,7 +20,7 @@ This repository is my personal workspace for preparing for the **Databricks Cert
 
 1. Clone the repository:  
    ```bash
-   git clone https://github.com/Rafavermar/DatabricksDemoRepo.git
+   https://jrverama@dev.azure.com/jrverama/DatabricksDemoRepo/_git/DatabricksDemoRepo
    ```
 2. Import notebooks into Databricks or run them locally with the appropriate Spark environment.
 
