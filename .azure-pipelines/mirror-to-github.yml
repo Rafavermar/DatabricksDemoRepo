@@ -4,10 +4,9 @@ trigger:
   branches:
     include:
       - main
-      - dev
 
 pool:
-  name: Default   # your self-hosted Windows agent
+  name: Default
 
 steps:
   # 1) Full checkout with history
