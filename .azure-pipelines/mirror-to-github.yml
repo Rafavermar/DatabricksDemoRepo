@@ -1,44 +1,46 @@
 # Mirror Azure DevOps → GitHub
-# Pushing on main or develop only
+# Runs only on main or dev branches
 trigger:
   branches:
     include:
       - main
-      - develop
 
 pool:
   name: Default
-  # vmImage: ubuntu-latest
 
 steps:
-  # 1) Complete Checkout with Historic
+  # 1) Full checkout with history
   - checkout: self
     fetchDepth: 0
     persistCredentials: true
 
-  # 2) Git bot identity config
-  - script: |
+  # 2) Configure Git identity
+  - powershell: |
       git config user.name "ado-mirror-bot"
       git config user.email "ado-mirror-bot@users.noreply.github.com"
-    displayName: "Configurar identidad Git"
+    displayName: "Configure Git identity"
 
-  # 3) Mirror execution
-  - script: |
-      echo ===> URL origen \(ADO\)
-      for /f "delims=" %%i in ('git config --get remote.origin.url') do set SRC_URL=%%i
-      echo %SRC_URL%
-
-      echo ===> Destination URL \(GitHub\)
-      set GH_URL=https://%GITHUB_PAT%@github.com/%USUARIO_GITHUB%/%REPO_GITHUB%.git
-      echo %GH_URL%
-
-      echo ===> Cloning mirror repo...
-      mkdir mirror_tmp
-      cd mirror_tmp
-      git clone --mirror %SRC_URL%
-      cd *.git
-
-      echo ===> Pushing mirror to GitHub...
-      git push --mirror %GH_URL%
+  # 3) Perform the mirroring
+  - task: PowerShell@2
     displayName: "Mirror to GitHub complete"
-    shell: cmd
+    env:
+      GITHUB_PAT: $(GITHUB_PAT)
+      USUARIO_GITHUB: $(USUARIO_GITHUB)
+      REPO_GITHUB: $(REPO_GITHUB)
+    inputs:
+      targetType: inline
+      script: |
+        Write-Host "===> Getting source URL (Azure DevOps)"
+        $src = "$(Build.Repository.Uri)"
+        Write-Host "Source: $src"
+
+        Write-Host "===> Cloning in mirror mode..."
+        git clone --mirror $src repo_mirror
+        Set-Location repo_mirror
+
+        Write-Host "===> Building destination URL (GitHub)"
+        $ghUrl = "https://$env:GITHUB_PAT@github.com/$env:USUARIO_GITHUB/$env:REPO_GITHUB.git"
+        Write-Host "Destination: $ghUrl"
+
+        Write-Host "===> Pushing to GitHub..."
+        git push --mirror $ghUrl
